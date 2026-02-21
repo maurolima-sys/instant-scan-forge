@@ -14,7 +14,86 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      qr_codes: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          is_dynamic: boolean
+          logo_url: string | null
+          original_url: string
+          qr_settings: Json
+          scan_count: number
+          short_code: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          is_dynamic?: boolean
+          logo_url?: string | null
+          original_url: string
+          qr_settings?: Json
+          scan_count?: number
+          short_code?: string | null
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          is_dynamic?: boolean
+          logo_url?: string | null
+          original_url?: string
+          qr_settings?: Json
+          scan_count?: number
+          short_code?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      qr_scans: {
+        Row: {
+          id: string
+          ip_country: string | null
+          qr_code_id: string
+          referrer: string | null
+          scanned_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          id?: string
+          ip_country?: string | null
+          qr_code_id: string
+          referrer?: string | null
+          scanned_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          id?: string
+          ip_country?: string | null
+          qr_code_id?: string
+          referrer?: string | null
+          scanned_at?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qr_scans_qr_code_id_fkey"
+            columns: ["qr_code_id"]
+            isOneToOne: false
+            referencedRelation: "qr_codes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
