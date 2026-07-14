@@ -1,73 +1,91 @@
-# Welcome to your Lovable project
+# QR Pro — Gerador de QR Codes Profissional
 
-## Project info
+> A ferramenta #1 de QR Codes no Brasil. Crie, personalize e rastreie QR codes dinâmicos com analytics em tempo real.
 
-**URL**: https://lovable.dev/projects/e19b96a7-5a9f-4900-b67e-59d92469fa5c
+🔗 **Live:** [instant-scan-forge.lovable.app](https://instant-scan-forge.lovable.app)
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## ✨ Sobre o projeto
 
-**Use Lovable**
+**QR Pro** é uma plataforma SaaS completa para geração e gerenciamento de QR Codes, voltada para profissionais e empresas que precisam de mais do que um simples gerador. Além de criar QR codes personalizados em segundos, oferece recursos avançados como códigos dinâmicos, analytics de escaneamento e histórico centralizado.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e19b96a7-5a9f-4900-b67e-59d92469fa5c) and start prompting.
+## 🚀 Funcionalidades
 
-Changes made via Lovable will be committed automatically to this repo.
+### Gerador (grátis, sem cadastro)
+- ⚡ **Geração instantânea** — QR code criado em tempo real conforme você digita
+- 🎨 **Personalização completa** — tamanho, margem, cores (escura/clara) e nível de correção de erro (L, M, Q, H)
+- 📥 **Exportação em PNG e SVG** com nome de arquivo customizável
+- 📋 **Copiar imagem** direto para a área de transferência
+- 💾 **Persistência local** — suas preferências ficam salvas no navegador
 
-**Use your preferred IDE**
+### Recursos Pro (usuários autenticados)
+- 🔄 **QR Codes Dinâmicos** — edite o destino sem reimprimir
+- 📊 **Analytics Detalhado** — escaneamentos, localização e dispositivos em tempo real
+- 🖼️ **Logo Personalizado** — insira sua marca no centro do QR code
+- 🗂️ **Histórico Completo** — gerencie todos os seus QR codes em um painel
+- 🛡️ **Alta Confiabilidade** — correção de erro avançada
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 💳 Planos
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+| Plano | Preço | Ideal para |
+|-------|-------|------------|
+| **Gratuito** | R$ 0/mês | Uso pessoal — 5 QR codes estáticos/mês, PNG/SVG, sem marca d'água |
+| **Pro** ⭐ | R$ 29/mês | Profissionais — QR codes ilimitados, dinâmicos, logo, analytics básico, histórico |
+| **Business** | R$ 79/mês | Empresas — Analytics avançado, API, geração em lote, suporte prioritário, domínio próprio |
 
-Follow these steps:
+## 🛠️ Stack técnica
+
+- **Frontend:** React 18 + Vite 5 + TypeScript 5
+- **UI:** Tailwind CSS + shadcn/ui
+- **Backend:** Lovable Cloud (Auth, Database, Edge Functions, RLS)
+- **Pagamentos:** Stripe
+- **Autenticação:** Email/senha + Google OAuth
+- **Geração de QR:** biblioteca `qrcode`
+
+## 🏁 Começando localmente
+
+Pré-requisitos: **Node.js** e **npm** ([instalar com nvm](https://github.com/nvm-sh/nvm#installing-and-updating)).
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# 1. Clone o repositório
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
+# 2. Instale as dependências
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 3. Rode o servidor de desenvolvimento
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+O app estará disponível em `http://localhost:8080`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📂 Estrutura principal
 
-**Use GitHub Codespaces**
+```
+src/
+├── components/     # QRGenerator e componentes UI (shadcn)
+├── pages/          # Landing, Auth, Dashboard, Index
+├── hooks/          # useAuth, useDebounce
+├── integrations/   # Cliente do backend (Lovable Cloud)
+└── index.css       # Design system (tokens semânticos)
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🌐 Editando o projeto
 
-## What technologies are used for this project?
+**Via Lovable** — visite o [Projeto Lovable](https://lovable.dev/projects/e19b96a7-5a9f-4900-b67e-59d92469fa5c) e comece a prompt.
 
-This project is built with:
+**Via IDE local** — clone, edite e faça push; as mudanças sincronizam com o Lovable automaticamente.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+**Via GitHub** — edite arquivos direto pelo navegador ou use GitHub Codespaces.
 
-## How can I deploy this project?
+## 🚢 Deploy
 
-Simply open [Lovable](https://lovable.dev/projects/e19b96a7-5a9f-4900-b67e-59d92469fa5c) and click on Share -> Publish.
+Abra o [Lovable](https://lovable.dev/projects/e19b96a7-5a9f-4900-b67e-59d92469fa5c) e clique em **Share → Publish**.
 
-## Can I connect a custom domain to my Lovable project?
+Para conectar um domínio personalizado, vá em **Project → Settings → Domains → Connect Domain**. [Guia completo](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide).
 
-Yes, you can!
+---
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+© 2026 QR Pro. Todos os direitos reservados.
