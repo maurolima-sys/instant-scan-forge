@@ -380,7 +380,7 @@ const QRGenerator = () => {
             </p>
           </div>
 
-          <div className="relative" style={{ width: `${settings.size}px`, height: `${settings.size}px` }}>
+          <div className="relative">
             {isLoading ? (
               <div 
                 className="bg-accent/20 rounded-2xl flex items-center justify-center border-2 border-dashed border-border/50"
