@@ -10,6 +10,8 @@
 
 **QR Pro** é um projeto pessoal cujo objetivo foi exercitar, de ponta a ponta, a arquitetura de um micro-SaaS real — não apenas o gerador em si. A superfície visível é um gerador de QR codes; a parte interessante é o que está por trás: autenticação, isolamento de dados por usuário via Row Level Security, tiers de assinatura com gating de features e integração com Stripe para checkout.
 
+Construí este projeto para praticar, num escopo pequeno e controlado, os mesmos padrões de multi-tenancy, RLS e billing que aplico no **Sistema Monitore** (produto principal). Aqui a superfície é intencionalmente commodity (gerador de QR) justamente para deixar a arquitetura em evidência.
+
 Este repositório é um **protótipo de arquitetura**, não um produto validado no mercado. Não há métricas de uso, usuários pagantes ou tração comercial associadas.
 
 ## O que foi construído
