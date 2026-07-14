@@ -1,91 +1,88 @@
-# QR Pro — Gerador de QR Codes Profissional
+# QR Pro — Micro-SaaS de Geração de QR Codes
 
-> A ferramenta #1 de QR Codes no Brasil. Crie, personalize e rastreie QR codes dinâmicos com analytics em tempo real.
+> Protótipo funcional de uma arquitetura SaaS completa: autenticação, billing com Stripe, RLS multi-tenant e feature gating por plano. Construído com AI-assisted programming para validar o ciclo end-to-end de um produto de assinatura.
 
-🔗 **Live:** [instant-scan-forge.lovable.app](https://instant-scan-forge.lovable.app)
+🔗 **Demo:** [instant-scan-forge.lovable.app](https://instant-scan-forge.lovable.app)
 
 ---
 
-## ✨ Sobre o projeto
+## Sobre o projeto
 
-**QR Pro** é uma plataforma SaaS completa para geração e gerenciamento de QR Codes, voltada para profissionais e empresas que precisam de mais do que um simples gerador. Além de criar QR codes personalizados em segundos, oferece recursos avançados como códigos dinâmicos, analytics de escaneamento e histórico centralizado.
+**QR Pro** é um projeto pessoal cujo objetivo foi exercitar, de ponta a ponta, a arquitetura de um micro-SaaS real — não apenas o gerador em si. A superfície visível é um gerador de QR codes; a parte interessante é o que está por trás: autenticação, isolamento de dados por usuário via Row Level Security, tiers de assinatura com gating de features e integração com Stripe para checkout.
 
-## 🚀 Funcionalidades
+Este repositório é um **protótipo de arquitetura**, não um produto validado no mercado. Não há métricas de uso, usuários pagantes ou tração comercial associadas.
 
-### Gerador (grátis, sem cadastro)
-- ⚡ **Geração instantânea** — QR code criado em tempo real conforme você digita
-- 🎨 **Personalização completa** — tamanho, margem, cores (escura/clara) e nível de correção de erro (L, M, Q, H)
-- 📥 **Exportação em PNG e SVG** com nome de arquivo customizável
-- 📋 **Copiar imagem** direto para a área de transferência
-- 💾 **Persistência local** — suas preferências ficam salvas no navegador
+## O que foi construído
 
-### Recursos Pro (usuários autenticados)
-- 🔄 **QR Codes Dinâmicos** — edite o destino sem reimprimir
-- 📊 **Analytics Detalhado** — escaneamentos, localização e dispositivos em tempo real
-- 🖼️ **Logo Personalizado** — insira sua marca no centro do QR code
-- 🗂️ **Histórico Completo** — gerencie todos os seus QR codes em um painel
-- 🛡️ **Alta Confiabilidade** — correção de erro avançada
+### Camada de produto (gerador)
+- Geração de QR code em tempo real com debounce
+- Personalização: tamanho, margem, cores, nível de correção de erro (L/M/Q/H)
+- Exportação em PNG e SVG, cópia direta para a área de transferência
+- Persistência local das preferências do usuário
 
-## 💳 Planos
+### Camada de SaaS (o que este projeto exercita)
+- **Auth:** email/senha + Google OAuth
+- **Multi-tenant com RLS:** cada usuário só enxerga os próprios QR codes e scans, garantido no banco via políticas de Row Level Security
+- **Feature gating por plano:** recursos como QR dinâmico, analytics e logo custom são gated por tier
+- **Billing:** integração com Stripe para checkout dos planos Pro e Business
+- **Dashboard autenticado:** histórico de QR codes, contagem de scans, gestão de links dinâmicos
 
-| Plano | Preço | Ideal para |
-|-------|-------|------------|
-| **Gratuito** | R$ 0/mês | Uso pessoal — 5 QR codes estáticos/mês, PNG/SVG, sem marca d'água |
-| **Pro** ⭐ | R$ 29/mês | Profissionais — QR codes ilimitados, dinâmicos, logo, analytics básico, histórico |
-| **Business** | R$ 79/mês | Empresas — Analytics avançado, API, geração em lote, suporte prioritário, domínio próprio |
+## Planos (modelo de precificação exercitado)
 
-## 🛠️ Stack técnica
+| Plano | Preço | Escopo |
+|-------|-------|--------|
+| Gratuito | R$ 0/mês | Uso pessoal — QR estáticos, PNG/SVG |
+| Pro | R$ 29/mês | QR dinâmicos, logo, analytics básico, histórico |
+| Business | R$ 79/mês | Analytics avançado, API, geração em lote |
+
+Os preços refletem o modelo desenhado; não indicam base de clientes.
+
+## Stack técnica
 
 - **Frontend:** React 18 + Vite 5 + TypeScript 5
 - **UI:** Tailwind CSS + shadcn/ui
-- **Backend:** Lovable Cloud (Auth, Database, Edge Functions, RLS)
+- **Backend:** Lovable Cloud (Auth, Postgres, Edge Functions, RLS)
 - **Pagamentos:** Stripe
 - **Autenticação:** Email/senha + Google OAuth
-- **Geração de QR:** biblioteca `qrcode`
+- **QR:** biblioteca `qrcode`
 
-## 🏁 Começando localmente
+## Modelo de dados (resumo)
 
-Pré-requisitos: **Node.js** e **npm** ([instalar com nvm](https://github.com/nvm-sh/nvm#installing-and-updating)).
+- `qr_codes` — QR codes por usuário, com flag `is_dynamic`, `short_code`, `scan_count`, RLS por `user_id`
+- `qr_scans` — eventos de scan associados a um `qr_code_id`, INSERT restrito a QR codes ativos, SELECT restrito ao dono
+
+Row Level Security está habilitada em todas as tabelas públicas; nenhuma política usa `WITH CHECK (true)` para escrita.
+
+## Rodando localmente
+
+Pré-requisitos: **Node.js** e **npm** ([instalar via nvm](https://github.com/nvm-sh/nvm#installing-and-updating)).
 
 ```sh
-# 1. Clone o repositório
 git clone <YOUR_GIT_URL>
 cd <YOUR_PROJECT_NAME>
-
-# 2. Instale as dependências
 npm i
-
-# 3. Rode o servidor de desenvolvimento
 npm run dev
 ```
 
-O app estará disponível em `http://localhost:8080`.
+App disponível em `http://localhost:8080`.
 
-## 📂 Estrutura principal
+## Estrutura
 
 ```
 src/
-├── components/     # QRGenerator e componentes UI (shadcn)
+├── components/     # QRGenerator + componentes UI (shadcn)
 ├── pages/          # Landing, Auth, Dashboard, Index
 ├── hooks/          # useAuth, useDebounce
 ├── integrations/   # Cliente do backend (Lovable Cloud)
 └── index.css       # Design system (tokens semânticos)
 ```
 
-## 🌐 Editando o projeto
+## Notas de transparência
 
-**Via Lovable** — visite o [Projeto Lovable](https://lovable.dev/projects/e19b96a7-5a9f-4900-b67e-59d92469fa5c) e comece a prompt.
-
-**Via IDE local** — clone, edite e faça push; as mudanças sincronizam com o Lovable automaticamente.
-
-**Via GitHub** — edite arquivos direto pelo navegador ou use GitHub Codespaces.
-
-## 🚢 Deploy
-
-Abra o [Lovable](https://lovable.dev/projects/e19b96a7-5a9f-4900-b67e-59d92469fa5c) e clique em **Share → Publish**.
-
-Para conectar um domínio personalizado, vá em **Project → Settings → Domains → Connect Domain**. [Guia completo](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide).
+- Construído com **AI-assisted programming** via Lovable — o objetivo era validar arquitetura e iterar rápido, não escrever cada linha manualmente.
+- Sem usuários reais nem receita. Trate como portfolio/protótipo.
+- Emails aparecendo em capturas de tela são contas de teste descartáveis.
 
 ---
 
-© 2026 QR Pro. Todos os direitos reservados.
+© 2026 QR Pro — projeto de portfolio.
