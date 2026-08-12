@@ -1,90 +1,85 @@
-# QR Pro — Micro-SaaS de Geração de QR Codes
+# QR Pro — QR Code Generation Micro-SaaS
 
-> Protótipo funcional de uma arquitetura SaaS completa: autenticação, billing com Stripe, RLS multi-tenant e feature gating por plano. Construído com AI-assisted programming para validar o ciclo end-to-end de um produto de assinatura.
+> A functional prototype of a complete SaaS architecture: authentication, Stripe billing, multi-tenant RLS, and plan-based feature gating. Built with AI-assisted programming to validate the end-to-end cycle of a subscription product.
 
 🔗 **Demo:** [instant-scan-forge.lovable.app](https://instant-scan-forge.lovable.app)
 
 ---
 
-## Sobre o projeto
+## About the Project
 
-**QR Pro** é um projeto pessoal cujo objetivo foi exercitar, de ponta a ponta, a arquitetura de um micro-SaaS real — não apenas o gerador em si. A superfície visível é um gerador de QR codes; a parte interessante é o que está por trás: autenticação, isolamento de dados por usuário via Row Level Security, tiers de assinatura com gating de features e integração com Stripe para checkout.
+**QR Pro** is a personal project aimed at exercising the end-to-end architecture of a real micro-SaaS. While the visible surface is a QR code generator, the core focus is on the backend infrastructure: authentication, data isolation per user via Row Level Security (RLS), subscription tiers with feature gating, and Stripe integration for checkout.
 
-Construí este projeto para praticar, num escopo pequeno e controlado, os mesmos padrões de multi-tenancy, RLS e billing que aplico no **Sistema Monitore** (produto principal). Aqui a superfície é intencionalmente commodity (gerador de QR) justamente para deixar a arquitetura em evidência.
+I built this project to practice the same multi-tenancy, RLS, and billing patterns I apply in the **Monitore System** (my main product), but within a smaller, controlled scope.
 
-Este repositório é um **protótipo de arquitetura**, não um produto validado no mercado. Não há métricas de uso, usuários pagantes ou tração comercial associadas.
+This repository is an **architectural prototype**, not a market-validated product.
 
-## O que foi construído
+## Key Features
 
-### Camada de produto (gerador)
-- Geração de QR code em tempo real com debounce
-- Personalização: tamanho, margem, cores, nível de correção de erro (L/M/Q/H)
-- Exportação em PNG e SVG, cópia direta para a área de transferência
-- Persistência local das preferências do usuário
+### Product Layer (Generator)
+- Real-time QR code generation with debounce.
+- Customization: size, margin, colors, error correction level (L/M/Q/H).
+- Export to PNG and SVG, direct copy to clipboard.
+- Local persistence of user preferences.
 
-### Camada de SaaS (o que este projeto exercita)
-- **Auth:** email/senha + Google OAuth
-- **Multi-tenant com RLS:** cada usuário só enxerga os próprios QR codes e scans, garantido no banco via políticas de Row Level Security
-- **Feature gating por plano:** recursos como QR dinâmico, analytics e logo custom são gated por tier
-- **Billing:** integração com Stripe para checkout dos planos Pro e Business
-- **Dashboard autenticado:** histórico de QR codes, contagem de scans, gestão de links dinâmicos
+### SaaS Layer (Core Focus)
+- **Auth:** Email/password + Google OAuth.
+- **Multi-tenant with RLS:** Each user only sees their own QR codes and scans, enforced at the database level via Row Level Security policies.
+- **Feature Gating by Plan:** Resources like dynamic QR codes, analytics, and custom logos are gated by tier.
+- **Billing:** Stripe integration for Pro and Business plan checkouts.
+- **Authenticated Dashboard:** QR code history, scan counts, and dynamic link management.
 
-## Planos (modelo de precificação exercitado)
+## Pricing Model
 
-| Plano | Preço | Escopo |
+| Plan | Price | Scope |
 |-------|-------|--------|
-| Gratuito | R$ 0/mês | Uso pessoal — QR estáticos, PNG/SVG |
-| Pro | R$ 29/mês | QR dinâmicos, logo, analytics básico, histórico |
-| Business | R$ 79/mês | Analytics avançado, API, geração em lote |
+| Free | £0/month | Personal use — Static QRs, PNG/SVG |
+| Pro | £29/month | Dynamic QRs, Logo, Basic Analytics, History |
+| Business | £79/month | Advanced Analytics, API, Batch Generation |
 
-Os preços refletem o modelo desenhado; não indicam base de clientes.
-
-## Stack técnica
+## Technical Stack
 
 - **Frontend:** React 18 + Vite 5 + TypeScript 5
 - **UI:** Tailwind CSS + shadcn/ui
-- **Backend:** Lovable Cloud (Auth, Postgres, Edge Functions, RLS)
-- **Pagamentos:** Stripe
-- **Autenticação:** Email/senha + Google OAuth
-- **QR:** biblioteca `qrcode`
+- **Backend:** Supabase (Auth, Postgres, Edge Functions, RLS)
+- **Payments:** Stripe
+- **Authentication:** Email/password + Google OAuth
+- **QR Engine:** `qrcode` library
 
-## Modelo de dados (resumo)
+## Data Model (Summary)
 
-- `qr_codes` — QR codes por usuário, com flag `is_dynamic`, `short_code`, `scan_count`, RLS por `user_id`
-- `qr_scans` — eventos de scan associados a um `qr_code_id`, INSERT restrito a QR codes ativos, SELECT restrito ao dono
+- `qr_codes` — QR codes per user, including `is_dynamic`, `short_code`, `scan_count`, with RLS enforced by `user_id`.
+- `qr_scans` — Scan events associated with a `qr_code_id`, restricted to the owner via RLS.
 
-Row Level Security está habilitada em todas as tabelas públicas; nenhuma política usa `WITH CHECK (true)` para escrita.
+## Getting Started
 
-## Rodando localmente
-
-Pré-requisitos: **Node.js** e **npm** ([instalar via nvm](https://github.com/nvm-sh/nvm#installing-and-updating)).
+Prerequisites: **Node.js** and **npm**.
 
 ```sh
-git clone <YOUR_GIT_URL>
-cd <YOUR_PROJECT_NAME>
-npm i
+git clone https://github.com/maurolima-sys/instant-scan-forge.git
+cd instant-scan-forge
+npm install
 npm run dev
 ```
 
-App disponível em `http://localhost:8080`.
+The app will be available at `http://localhost:8080`.
 
-## Estrutura
+## Project Structure
 
 ```
 src/
-├── components/     # QRGenerator + componentes UI (shadcn)
+├── components/     # QRGenerator + UI components (shadcn)
 ├── pages/          # Landing, Auth, Dashboard, Index
 ├── hooks/          # useAuth, useDebounce
-├── integrations/   # Cliente do backend (Lovable Cloud)
-└── index.css       # Design system (tokens semânticos)
+├── integrations/   # Backend client (Supabase)
+└── index.css       # Design system
 ```
 
-## Notas de transparência
+## Transparency Notes
 
-- Construído com **AI-assisted programming** via Lovable — o objetivo era validar arquitetura e iterar rápido, não escrever cada linha manualmente.
-- Sem usuários reais nem receita. Trate como portfolio/protótipo.
-- Emails aparecendo em capturas de tela são contas de teste descartáveis.
+- Built with **AI-assisted programming** — the goal was to validate architecture and iterate quickly.
+- This is a portfolio prototype; there are no real users or revenue associated with this specific repository.
 
 ---
 
-© 2026 QR Pro — projeto de portfolio.
+© 2026 QR Pro — Portfolio Project by Mauro Frank Lima.
