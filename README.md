@@ -64,6 +64,19 @@ npm run dev
 
 The app will be available at `http://localhost:8080`.
 
+
+## Environment Variables
+
+Configure these variables in your local `.env` file and in your deployment provider before running the app:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `VITE_SUPABASE_URL` | Yes | Supabase project URL used by the browser client. |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Yes | Supabase publishable client key used by the browser client. |
+| `VITE_SUPABASE_ANON_KEY` | Optional | Backwards-compatible alias used only when `VITE_SUPABASE_PUBLISHABLE_KEY` is not set. |
+
+The app validates `VITE_SUPABASE_URL` and the publishable key at startup and throws a clear error when either required value is missing.
+
 ## Project Structure
 
 ```

@@ -2,11 +2,15 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_PROJECT_ID = 'ncwkutbwlhswhkvmndpc';
-const SUPABASE_URL =
-  import.meta.env.VITE_SUPABASE_URL ?? `https://${SUPABASE_PROJECT_ID}.supabase.co`;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_PUBLISHABLE_KEY =
   import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!SUPABASE_URL) {
+  throw new Error(
+    'Missing Supabase URL. Set VITE_SUPABASE_URL in the deployment environment.',
+  );
+}
 
 if (!SUPABASE_PUBLISHABLE_KEY) {
   throw new Error(
