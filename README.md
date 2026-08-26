@@ -62,6 +62,17 @@ npm install
 npm run dev
 ```
 
+### Environment Variables
+
+Create a local `.env` file or configure these variables in your deployment platform:
+
+```sh
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your-supabase-publishable-or-anon-key
+```
+
+`VITE_SUPABASE_ANON_KEY` is also supported as a backwards-compatible alias for the publishable key.
+
 The app will be available at `http://localhost:8080`.
 
 ## Project Structure
