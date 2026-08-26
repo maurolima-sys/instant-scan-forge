@@ -8,16 +8,19 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
   import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!SUPABASE_PUBLISHABLE_KEY) {
-  throw new Error(
-    'Missing Supabase publishable key. Set VITE_SUPABASE_PUBLISHABLE_KEY or VITE_SUPABASE_ANON_KEY in the deployment environment.',
-  );
+export const isSupabaseConfigured = Boolean(SUPABASE_PUBLISHABLE_KEY);
+export const supabaseConfigurationError = isSupabaseConfigured
+  ? null
+  : 'Supabase authentication is not configured. Set VITE_SUPABASE_PUBLISHABLE_KEY or VITE_SUPABASE_ANON_KEY in the deployment environment.';
+
+if (supabaseConfigurationError) {
+  console.error(supabaseConfigurationError);
 }
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY || 'missing-supabase-publishable-key', {
   auth: {
     storage: localStorage,
     persistSession: true,
