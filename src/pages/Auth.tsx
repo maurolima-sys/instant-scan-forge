@@ -19,9 +19,18 @@ const Auth = () => {
 
   const handleGoogle = async () => {
     setGoogleLoading(true);
-    const { error } = await signInWithGoogle();
-    if (error) {
-      toast({ title: 'Erro ao entrar com Google', description: error.message, variant: 'destructive' });
+    try {
+      const { error } = await signInWithGoogle();
+      if (error) {
+        toast({ title: 'Erro ao entrar com Google', description: error.message, variant: 'destructive' });
+      }
+    } catch (error) {
+      toast({
+        title: 'Erro ao entrar com Google',
+        description: error instanceof Error ? error.message : 'Não foi possível conectar. Tente novamente.',
+        variant: 'destructive',
+      });
+    } finally {
       setGoogleLoading(false);
     }
   };
