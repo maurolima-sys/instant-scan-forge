@@ -1,0 +1,3 @@
+## Authentication
+- Managed Google OAuth returns to the public `/auth` page; only navigate to the dashboard after the auth session is hydrated, so protected-route guards cannot interrupt the callback.
+- Keep Cloud-generated integration files and environment settings tool-managed; missing published configuration must be repaired through the Cloud connection and publishing, not client-side credential fallbacks.
